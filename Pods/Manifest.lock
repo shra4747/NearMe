@@ -1,0 +1,20 @@
+PODS:
+  - BulletinBoard (4.1.1)
+  - lottie-ios (3.1.8)
+
+DEPENDENCIES:
+  - BulletinBoard
+  - lottie-ios
+
+SPEC REPOS:
+  trunk:
+    - BulletinBoard
+    - lottie-ios
+
+SPEC CHECKSUMS:
+  BulletinBoard: 25cf38fa1dd9292936ea6122b95ec2ec9b773e9c
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+
+PODFILE CHECKSUM: b22a9363cc5b3d0c2b1a9852940e3c0410f938d6
+
+COCOAPODS: 1.9.1
