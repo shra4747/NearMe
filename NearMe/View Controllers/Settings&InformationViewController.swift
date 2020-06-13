@@ -11,13 +11,16 @@ import BLTNBoard
 
 class SetfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let userDefaults = UserDefaults()
     
-    var settings = ["Share bugs or request improvements here!", "Reset all data", "Credits", "Version 1.0.0","Copyright (c) 2020 Shravan Prasanth. All Rights Reserved."]
+    var settings = ["Share bugs or request improvements here!", "Reset app", "Credits", "Onboarding", "Version 1.0.0","Copyright (c) 2020 Shravan Prasanth. All Rights Reserved."]
     
     private lazy var boardManager: BLTNItemManager = {
         
         let item = BLTNPageItem(title: "Delete Data?")
         item.image = UIImage(named: "bin")
+        item.appearance.titleTextColor = UIColor.lightGray
+        item.appearance.descriptionTextColor = UIColor.black
         item.appearance.imageViewTintColor = UIColor.white
         item.actionButtonTitle = "Confirm"
         item.alternativeButtonTitle = "Cancel"
@@ -46,16 +49,16 @@ class SetfoViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         cell?.textLabel?.text = settings[indexPath.row]
         cell?.textLabel!.font = UIFont(name:"Jost", size:18)
-        if indexPath.row > 2 {
+        if indexPath.row > 3 {
             cell?.textLabel?.textColor = UIColor.lightGray
             cell?.isUserInteractionEnabled = false
-            if indexPath.row == 4 {
+            if indexPath.row == 5 {
                 cell?.textLabel!.font = UIFont(name:"Jost", size:13)
             }
         }
         
         if let image = cell?.contentView.viewWithTag(1010) as? UIButton {
-            if indexPath.row > 2 {
+            if indexPath.row > 3 {
                 image.isHidden = true
             }
         }
@@ -76,10 +79,14 @@ class SetfoViewController: UIViewController, UITableViewDelegate, UITableViewDat
             goToBugs()
         }
         else if indexPath.row == 1 {
+            boardManager.backgroundColor = UIColor.white
             boardManager.showBulletin(above: self)
         }
         else if indexPath.row == 2 {
             performSegue(withIdentifier: "credits", sender: self)
+        }
+        else if indexPath.row == 3 {
+            performSegue(withIdentifier: "onboarding", sender: self)
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -93,6 +100,8 @@ class SetfoViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func confirmAndDelete() {
         boardManager.dismissBulletin(animated: true)
+        userDefaults.setValue(nil, forKey: "vc")
+        performSegue(withIdentifier: "ed", sender: self)
         // Delete all Data Saved in App
     }
     

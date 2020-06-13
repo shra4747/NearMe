@@ -10,6 +10,9 @@ import UIKit
 import Lottie
 
 class Splash: UIViewController {
+    
+    let userDefaults = UserDefaults()
+    
     let animationView = AnimationView()
     var timer = Timer()
     var ye = ""
@@ -39,13 +42,24 @@ class Splash: UIViewController {
         if ye != "yeye" {
             ye += "ye"
         }
-        else {
+        else { 
             animationView.isHidden = true
             animationView.stop()
             timer.invalidate()
-            performSegue(withIdentifier: "gohome", sender: self)
+            whichController()
         }
         
+    }
+    
+    
+    
+    func whichController() {
+        guard let _ = userDefaults.value(forKey: "vc") else {
+            performSegue(withIdentifier: "ns", sender: self)
+            print("GOING")
+            return
+        }
+        performSegue(withIdentifier: "gohome", sender: self)
     }
 
 

@@ -2,6 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Coimbatore, India.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:Adayar, Chennai India.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:14KimbleCT.gpx">
+   </FileRef>
+   <FileRef
       location = "group:NearMe.xcodeproj">
    </FileRef>
    <FileRef

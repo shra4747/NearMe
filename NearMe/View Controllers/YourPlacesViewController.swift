@@ -15,6 +15,7 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
     var yourPlaces = [String]()
 
     @IBOutlet weak var tblList: UITableView!
+    @IBOutlet weak var noPLacesLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,8 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
         overrideUserInterfaceStyle = .light
         addplaces()
         save()
+        checklbl()
+        tblList.separatorStyle = .none
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -37,6 +40,8 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
             btnDelete.addTarget(self, action: #selector(deleteRow), for: .touchUpInside)
         }
         
+        
+        
         return cell!
     }
     
@@ -48,6 +53,7 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
         yourPlaces.remove(at: indexPath.row)
         tblList.deleteRows(at: [indexPath], with: .left)
         save()
+        checklbl()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,7 +61,7 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0
+        return 80.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -83,6 +89,17 @@ class YourPlacesViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBAction func dismiss(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func checklbl() {
+        if yourPlaces.count == 0 {
+            tblList.isHidden = true
+            noPLacesLbl.isHidden = false
+        }
+        else {
+            tblList.isHidden = false
+            noPLacesLbl.isHidden = true
+        }
     }
     
 
