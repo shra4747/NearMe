@@ -15,6 +15,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     let locationManager = CLLocationManager()
     
+    
+    var admages = [URL]()
     var timer = Timer()
     var changingIMAGE = UIImage()
     var q = String()
@@ -58,6 +60,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         var address:String
         var image:UIImage
         var rating:Int
+        var time:Int
     }
     
     var items = [Items]()
@@ -83,7 +86,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         getLocation()
         yourPlaceCheck()
         
-        spinner.isHidden = true
     }
     
     func getLocation() {
@@ -122,8 +124,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var animView: UIView!
     let animationview = AnimationView()
 
+    
+    var thetimer = Timer()
     func setupAnimation() {
         count = 0
+        animationview.stop()
         animView.alpha = 1
         animationview.alpha = 1
         animationview.frame = animView.bounds
@@ -133,19 +138,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         animationview.loopMode = .loop
         animationview.play()
         animView.addSubview(animationview)
-        let timer1 = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
-        
-        timer1.fire()
-        print("FIRED ")
+        thetimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+        thetimer.fire()
     }
     var count = 0
     
     @objc func fireTimer() {
         if count == 4 {
-            
-            self.tblList.alpha = 1
             animationview.stop()
             animView.alpha = 0
+            tblList.alpha = 1
             count = 0
         }
         else {
@@ -209,7 +211,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func gs(_ sender: Any) {
         setupAnimation()
         deleteAll()
-        link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=gas%20station&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+        self.link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=gas%20station&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+      
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+            for (index, link) in self.admages.enumerated() {
+                self.showTheIMagesInTheTableView(url: link, index: index)
+            }
+        }
         reloadAllData()
     }
     
@@ -217,6 +225,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         setupAnimation()
         deleteAll()
         link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=hotel&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+            for (index, link) in self.admages.enumerated() {
+                self.showTheIMagesInTheTableView(url: link, index: index)
+            }
+        }
         reloadAllData()
     }
     
@@ -225,6 +239,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         setupAnimation()
         deleteAll()
         link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=supermarket&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+            for (index, link) in self.admages.enumerated() {
+                self.showTheIMagesInTheTableView(url: link, index: index)
+            }
+        }
         reloadAllData()
     }
     
@@ -232,11 +252,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         setupAnimation()
         deleteAll()
         link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=restaurant&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+            for (index, link) in self.admages.enumerated() {
+                self.showTheIMagesInTheTableView(url: link, index: index)
+            }
+        }
         reloadAllData()
+        
+        
     }
     
+    @IBOutlet weak var testimage: UIImageView!
+    
+    var tIMage = UIImage()
+    
     func formatted(array: NSArray) {
-        var tIMage = UIImage()
+        var count = 0
         for object in array {
             let dict = object as? NSDictionary
             //            print(dict!)
@@ -247,7 +279,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 
                 let address = dict?.value(forKey: "vicinity") as! String
                 
-                print(name + address)
                 //                print(name)
                 var rate = NSNumber()
                 
@@ -267,32 +298,54 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
                 let url = URL(string: "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=\(photoref)&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")!
 
+                admages.append(url)
 
-                let taske = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                    guard let data = data, var image = UIImage(data: data) else {
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        self.items.append(Items(place: name, address: address, image: image, rating: Int(truncating: rate)))
-
-                        self.tblList.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-                        self.tblList.reloadData()
-                        self.tblList.reloadInputViews()
-                    }
-                }
-                taske.resume()
+                let image = getPhoto(url: url)
                 
-
-                
-                
+                self.add(name: name, address: address, image: image, rating: Int(truncating: rate), count: count)
             }
-            
-            
         }
         
     }
-    func add() {
-       
+    
+    func showTheIMagesInTheTableView(url: URL, index: Int) {
+        let thetaske = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.items[index].image = image
+                self.tblList.reloadData()
+            }
+            
+        }
+        thetaske.resume()
+    }
+    
+    
+    func getPhoto(url: URL) -> UIImage {
+        var returnImage = UIImage()
+        
+        URLSession.shared.dataTask(with: url) {(data, response, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                return
+            }
+            returnImage = image
+        }
+        return returnImage
+    }
+    
+    
+    func add(name: String, address: String, image: UIImage, rating: Int, count: Int) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            self.items.append(Items(place: name, address: address, image: image, rating: rating, time: count))
+            self.tblList.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+            self.tblList.reloadData()
+        })
+        
+        
+
     }
     
     
@@ -436,7 +489,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tblList.deselectRow(at: indexPath, animated: true)
-        changingIMAGE = items[indexPath.row].image 
+        changingIMAGE = items[indexPath.row].image
         //        userDefaults.setValue(places[indexPath.row], forKey: "placeP")
         //        userDefaults.setValue(addresses[indexPath.row], forKey: "placeA")
         //        userDefaults.setValue(images[indexPath.row], forKey: "placeI")
@@ -446,6 +499,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func deleteAll() {
         DispatchQueue.main.async {
+            self.admages.removeAll()
+            self.admages.removeAll()
             self.items.removeAll()
             self.tblList.reloadData()
         }
@@ -464,8 +519,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let stringQuery = searchQuery?.replacingOccurrences(of: " ", with: "%20")
             textFIeld.text = ""
             link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=\(stringQuery!)&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+                for (index, link) in self.admages.enumerated() {
+                    self.showTheIMagesInTheTableView(url: link, index: index)
+                }
+            }
+            reloadAllData()
+            
             boardManager.backgroundColor = UIColor.white
                     boardManager.showBulletin(above: self)
+            
             
         }
     }
@@ -483,6 +547,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let stringQuery = searchQuery?.replacingOccurrences(of: " ", with: "%20")
             textFIeld.text = ""
             link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=\(stringQuery!)&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.51) {
+                for (index, link) in self.admages.enumerated() {
+                    self.showTheIMagesInTheTableView(url: link, index: index)
+                }
+            }
+            reloadAllData()
             boardManager.backgroundColor = UIColor.white
             boardManager.showBulletin(above: self)
         }
@@ -509,8 +580,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if userDefaults.value(forKey: "up") != nil {
             let searchQuery = userDefaults.value(forKey: "up") as! String
             let stringQuery = (searchQuery).replacingOccurrences(of: " ", with: "%20")
+            setupAnimation()
+            deleteAll()
             link(link: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(lat),\(long)&rankby=distance&keyword=\(stringQuery)&key=AIzaSyC9WK1VVaBAbdR2_31y1OcEhzrzuXRkzyE")
+            reloadAllData()
             userDefaults.setValue(nil, forKey: "up")
+
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                for (index, link) in self.admages.enumerated() {
+                    self.showTheIMagesInTheTableView(url: link, index: index)
+                }
+            }
         }
     }
     

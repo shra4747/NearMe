@@ -204,6 +204,7 @@
 		DC01C52F2475D85300ED84B0 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				DC372D8C24757FF800626241 /* Assets.xcassets */,
 				DCED36E924952F2900413C8A /* ss.jpg */,
 				DCED36E824952F2900413C8A /* sss.jpg */,
 				DCED36E724952F2800413C8A /* ssss.jpg */,
@@ -211,7 +212,6 @@
 				DC40EF0C248572D6002F97EC /* loading.json */,
 				DC6738A424844F2F008B8C04 /* Simulator Screen Shot - iPhone 11 - 2020-05-31 at 16.45.03.png */,
 				DCB93F422481E0B200410475 /* zero_rating@3x.png */,
-				DC372D8C24757FF800626241 /* Assets.xcassets */,
 				DC006CD7247DE9EA00261F00 /* globe.json */,
 				DCFC3E872490195A004B0DB8 /* flipUnion 1@3x.png */,
 				DC006CD9247DF04F00261F00 /* crypto.json */,
@@ -653,16 +653,18 @@
 			baseConfigurationReference = CB3A6B6265BD43B4D4EF472C /* Pods-NearMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 679N5UGSB7;
+				DEVELOPMENT_TEAM = 66AVQK2TF9;
 				INFOPLIST_FILE = NearMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shravan-prasanth.NearMe";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shravan.prasanth.NearMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -673,16 +675,18 @@
 			baseConfigurationReference = FBC3581389E8C9D620430900 /* Pods-NearMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 679N5UGSB7;
+				DEVELOPMENT_TEAM = 66AVQK2TF9;
 				INFOPLIST_FILE = NearMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.shravan-prasanth.NearMe";
+				PRODUCT_BUNDLE_IDENTIFIER = com.shravan.prasanth.NearMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
